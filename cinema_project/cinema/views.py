@@ -139,6 +139,7 @@ def remove_from_watch_later(request, movie_id):
     else:
         return Response({'message': f'{movie.title} is not in watch later'})
 
+
 @swagger_auto_schema(
     method='post',
     request_body=openapi.Schema(
@@ -183,5 +184,20 @@ def delete_creator_biography(request, biography_id):
     biography = get_object_or_404(CreatorBiography, id=biography_id)
     biography.delete()
     return Response({'message': 'Biography deleted successfully'})
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def user_favorite_movies(request):
+    user_favorite_movies = FavoriteMovie.objects.filter(user=request.user)
+    serializer = FavoriteMovieSerializer(user_favorite_movies, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def user_watch_later_movies(request):
+    user_watch_later_movies = WatchLater.objects.filter(user=request.user)
+    serializer = WatchLaterSerializer(user_watch_later_movies, many=True)
+    return Response(serializer.data)
 
 

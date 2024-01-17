@@ -16,6 +16,8 @@ urlpatterns = [
     path('add_creator_biography/', add_creator_biography, name='add_creator_biography'),
     path('edit_creator_biography/<int:biography_id>/', edit_creator_biography, name='edit_creator_biography'),
     path('delete_creator_biography/<int:biography_id>/', delete_creator_biography, name='delete_creator_biography'),
+    path('user_favorite_movies/', views.user_favorite_movies, name='user_favorite_movies'),
+    path('user_watch_later_movies/', views.user_watch_later_movies, name='user_watch_later_movies'),
 
 ]
 
