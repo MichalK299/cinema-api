@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie, Review, Screening, Rating, FavoriteMovie
+from .models import Movie, Review, Screening, Rating, FavoriteMovie, WatchLater, CreatorBiography
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -31,3 +31,22 @@ class FavoriteMovieSerializer(serializers.ModelSerializer):
         model = FavoriteMovie
         fields = ['id', 'user', 'movie']
         read_only_fields = ['user']
+
+
+class WatchLaterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WatchLater
+        fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['movie_title'] = instance.movie.title
+        return representation
+
+
+class CreatorBiographySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CreatorBiography
+        fields = '__all__'
+
+

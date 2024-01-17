@@ -43,3 +43,34 @@ class FavoriteMovie(models.Model):
 
     def __str__(self):
         return f'{self.user.username}\'s favorite: {self.movie.title}'
+
+
+class WatchLater(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'movie')
+
+
+class CreatorBiography(models.Model):
+    creator_name = models.CharField(max_length=255)
+    biography = models.TextField()
+
+
+class TopList(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    movies = models.ManyToManyField('cinema.Movie', related_name='top_lists')
+
+    def __str__(self):
+        return self.name
+
+
+class TopListMovie(models.Model):
+    top_list = models.ForeignKey(TopList, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    position = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.top_list.name} - {self.movie.title}"
